@@ -4,7 +4,7 @@ import { ControlValueAccessor, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule
 type InputTypes = "text" | "email" | "password"
 
 @Component({
-  selector: 'app-primary-input',
+  selector: 'app-input-primary',
   standalone: true,
   imports: [
     ReactiveFormsModule
