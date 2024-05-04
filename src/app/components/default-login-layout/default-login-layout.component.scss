@@ -23,8 +23,8 @@ main {
     }
 
     img {
-        max-width: 100%; /* Define a largura máxima da imagem como 100% do contêiner pai */
-        height: auto; /* Garante que a altura seja ajustada automaticamente para manter a proporção */
+        max-width: 100%;
+        height: auto; 
     }
 
     .form-section {
@@ -32,8 +32,8 @@ main {
         padding: 0 35px;
 
         img {
-            // margin-bottom: 30px;
-            width: 200px; /* Define a largura da imagem como 200 pixels */
+           
+            width: 200px; 
             height: auto; 
         }
 
