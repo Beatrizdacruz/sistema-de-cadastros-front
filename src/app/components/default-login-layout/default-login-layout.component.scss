@@ -22,12 +22,19 @@ main {
         background-color: $gray-bg;
     }
 
+    img {
+        max-width: 100%; /* Define a largura máxima da imagem como 100% do contêiner pai */
+        height: auto; /* Garante que a altura seja ajustada automaticamente para manter a proporção */
+    }
+
     .form-section {
         flex-grow: 0.3;
         padding: 0 35px;
 
         img {
-            margin-bottom: 30px;
+            // margin-bottom: 30px;
+            width: 200px; /* Define a largura da imagem como 200 pixels */
+            height: auto; 
         }
 
         h2 {
