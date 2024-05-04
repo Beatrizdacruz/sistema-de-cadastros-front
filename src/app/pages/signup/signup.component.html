@@ -1,22 +1,23 @@
 <app-default-login-layout
-    title="Cadastre-se e inicie hoje!"
-    primaryBtnText="Cadastre-se agora"
-    secondaryBtnText="Entre agora"
+    title="Cadastre-se agora"
+    primaryBtnText="Realizar login"
+    secondaryBtnText="Cadastre-se"
     (submit)="submit()"
     (navigate)="navigate()"
     [disablePrimaryBtn]="!signupForm.valid"
 >
     <form [formGroup]="signupForm">
-        <app-primary-input
-            formControlName="name"
-            inputName="name"
-            type="text"
-            label="Seu nome"
-            placeholder="Maria Santos"
-        >
-            <img src="/assets/svg/email-icon.svg"/>
-        </app-primary-input>
-        <app-primary-input
+        <app-input-primary
+        formControlName="name"
+        inputName="name"
+        type="text"
+        label="Name"
+        placeholder="Maria Santos"
+    >
+        <img src="/assets/svg/email-icon.svg"/>
+    </app-input-primary>
+
+        <app-input-primary
             formControlName="email"
             inputName="email"
             type="email"
@@ -24,23 +25,28 @@
             placeholder="maria@gmail.com"
         >
             <img src="/assets/svg/email-icon.svg"/>
-        </app-primary-input>
-        <app-primary-input
+        </app-input-primary>
+        <app-input-primary
             formControlName="password"
             inputName="password"
             type="password"
             label="Sua senha"
-            placeholder="senha"
+            placeholder="Sua senha"
         >
         <img src="/assets/svg/password-icon.svg"/>
-    </app-primary-input>
-    <app-primary-input
-        formControlName="passwordConfirm"
-        inputName="passwordConfirm"
-        type="password"
-        label="Confirme sua senha"
-    >
+        </app-input-primary>
+
+    <app-input-primary
+            formControlName="passwordConfirm"
+            inputName="passwordConfirm"
+            type="password"
+            label="Sua senha"
+            placeholder="confirme sua senha"
+        >
         <img src="/assets/svg/password-icon.svg"/>
-    </app-primary-input>
+    </app-input-primary>
+
+    
+    <span>Esqueceu a senha?</span>
     </form>
 </app-default-login-layout>

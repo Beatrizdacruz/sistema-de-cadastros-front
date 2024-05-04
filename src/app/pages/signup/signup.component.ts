@@ -4,9 +4,10 @@ import { FormControl, FormGroup, FormRecord, ReactiveFormsModule, Validators } f
 import { PrimaryInputComponent } from '../../components/input-primary/input-primary.component';
 import { Router } from '@angular/router';
 import { LoginService } from '../../services/login.service';
+import { ToastrService } from 'ngx-toastr';
 
 interface SignupForm {
-  name: FormControl,
+  name: FormControl
   email: FormControl,
   password: FormControl,
   passwordConfirm: FormControl
@@ -29,22 +30,24 @@ interface SignupForm {
 export class SignUpComponent {
   signupForm!: FormGroup<SignupForm>;
 
+
   constructor(
     private router: Router,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private toastService: ToastrService
   ){
     this.signupForm = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.minLength(3)]),
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-      passwordConfirm: new FormControl('', [Validators.required, Validators.minLength(6)]),
+      passwordConfirm: new FormControl('', [Validators.required, Validators.minLength(6)])
     })
   }
 
   submit(){
     this.loginService.login(this.signupForm.value.email, this.signupForm.value.password).subscribe({
-      next: () => console.log("Login feito com sucesso!"),
-      error: () => console.log("Erro inesperado! Tente novamente mais tarde")
+      next: () => this.toastService.success("sucesso"),
+      error: () => this.toastService.error("erro")
     })
   }
 
