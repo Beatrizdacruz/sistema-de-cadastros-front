@@ -4,103 +4,62 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ConsultaCepService } from '../../services/consulta-cep.service';
 import { Location } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
+
 
 
 interface CreateAddressForm {
-  cep: string;
-  rua: string;
-  bairro: string;
-  cidade: string;
-  estado: string;
-  numero: string;
-  complemento: string;
+  cep: FormControl;
+  bairro: FormControl;
+  localidade: FormControl;
+  logradouro: FormControl;
+  uf: FormControl;
 }
 
 @Component({
   selector: 'app-create-address',
-  standalone: true,
   templateUrl: './create-address.component.html',
   styleUrls: ['./create-address.component.scss'],
+  providers: [ ConsultaCepService ]
 })
-export class CreateAddressComponent implements OnInit {
-  addressForm!: FormGroup;
-  usuario: any = {
-    nome: null,
-    email: null
-  };
+export class CreateAddressComponent{
+  addressForm!: FormGroup<CreateAddressForm>;
 
   constructor(
     private router: Router,
     private http: HttpClient,
-    private cepService: ConsultaCepService,
-    private location: Location
+    private location: Location,
+    private insertEndereço: ConsultaCepService,
+    private toastService: ToastrService
   ) {
     this.addressForm = new FormGroup({
       cep: new FormControl('', [Validators.required, Validators.minLength(3)]),
-      rua: new FormControl('', [Validators.required, Validators.minLength(3)]),
       bairro: new FormControl('', [Validators.required, Validators.minLength(6)]),
-      cidade: new FormControl('', [Validators.required, Validators.minLength(6)]),
-      estado: new FormControl('', [Validators.required, Validators.minLength(4)]),
-      numero: new FormControl('', [Validators.required, Validators.minLength(1)]),
-      complemento: new FormControl('', [Validators.required, Validators.minLength(6)])
+      localidade: new FormControl('', [Validators.required, Validators.minLength(6)]),
+      logradouro: new FormControl('', [Validators.required, Validators.minLength(4)]),
+      uf: new FormControl('', [Validators.required, Validators.minLength(4)])
     });
   }
 
-  ngOnInit() {}
 
-  onSubmit() {
-    console.log(this.addressForm.value);
-
-    this.http.post('https://httpbin.org/post', JSON.stringify(this.addressForm.value))
-      .subscribe(dados => {
-        console.log(dados);
-        this.addressForm.reset();
-      });
+  submit(){
+    this.insertEndereço.enviarEnderecos(
+      this.addressForm.value.cep,
+      this.addressForm.value.bairro,
+      this.addressForm.value.localidade,
+      this.addressForm.value.logradouro,
+      this.addressForm.value.uf
+    ).subscribe({
+      next: () => {
+        this.toastService.success("Endereço cadastrado com sucesso"),
+        this.router.navigate(["address"])
+      },
+      error: () => this.toastService.error("Erro ao cadastrar endereço")
+    })
   }
 
-  navigate() {
-    this.router.navigate(["create-address"]);
-  }
   back(){
     this.location.back();
   }
 
-  consultaCEP(cep: string) {
-    cep = cep.replace(/\D/g, '');
-    if (cep != null && cep !== '') {
-      this.cepService.consultaCEP(cep)
-        .subscribe(dados => this.populaDadosForm(dados));
-    }
-  }
-
-  populaDadosForm(dados: any) {
-    this.addressForm.patchValue({
-      rua: dados.logradouro,
-      complemento: dados.complemento,
-      bairro: dados.bairro,
-      cidade: dados.localidade,
-      estado: dados.uf
-    });
-  }
-
-  verificaValidTouched(campo: FormControl) {
-    return !campo.valid && campo.touched;
-  }
-
-  aplicaCssErro(campo: FormControl) {
-    return {
-      'has-error': this.verificaValidTouched(campo),
-      'has-feedback': this.verificaValidTouched(campo)
-    };
-  }
-
-  resetaDadosForm() {
-    this.addressForm.patchValue({
-      rua: null,
-      complemento: null,
-      bairro: null,
-      cidade: null,
-      estado: null
-    });
-  }
 }
