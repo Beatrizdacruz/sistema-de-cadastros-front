@@ -1,5 +1,13 @@
 import { Component } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { LoginService } from '../../services/login.service';
+import { HttpClient } from '@angular/common/http';
+import { ConsultaCepService } from '../../services/consulta-cep.service';
+
+
+
 
 @Component({
   selector: 'app-address',
@@ -9,9 +17,16 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrl: './address.component.scss',
 })
 export class AddressComponent {
-  constructor(private modalService: NgbModal) {}
+  
+  constructor(private router: Router,
+    private loginService: LoginService,
+    private toastService: ToastrService
+  ) {
+  }
+  
 
-  openModal() {
-    this.modalService.open({ ariaLabelledBy: 'modal-basic-title' });
+
+  navigate(){
+    this.router.navigate(["create-address"])
   }
 }
