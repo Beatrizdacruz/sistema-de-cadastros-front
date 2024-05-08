@@ -33,11 +33,13 @@ import {MatInput} from "@angular/material/input";
   styleUrl: './edit-address-dialog.component.scss'
 })
 export class EditAddressDialogComponent {
-  formData: any;
+  formData: any = {};
+  @ViewChild('map') mapElement: ElementRef | undefined;
 
   constructor(
     public dialogRef: MatDialogRef<EditAddressDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private http: HttpClient
   ) {
     this.formData = { ...data.formData };
   }
@@ -48,5 +50,27 @@ export class EditAddressDialogComponent {
 
   close() {
     this.dialogRef.close();
+  }
+ 
+
+  findAddress() {
+    const cep = this.formData.cep.replace(/\D/g, '');
+    if (cep.length !== 8) {
+      return;
+    }
+    this.http.get<any>(`https://viacep.com.br/ws/${cep}/json/`)
+      .subscribe(
+        data => {
+          this.formData.logradouro = data.logradouro;
+          this.formData.localidade = data.localidade;
+          this.formData.uf = data.uf;
+          this.formData.bairro = data.bairro;
+          console.log(data);
+          
+        },
+        error => {
+          console.log('Erro ao realizar consulta', error);
+        }
+      );
   }
 }
