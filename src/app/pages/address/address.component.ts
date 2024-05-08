@@ -21,6 +21,7 @@ import {
 import { MatPaginator } from '@angular/material/paginator';
 import { NgIf } from '@angular/common';
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
+import { EditAddressDialogComponent } from '../../components/edit-address-dialog/edit-address-dialog.component';
 
 export interface Address {
   id: number;
@@ -60,9 +61,7 @@ const addresses: Address[] = [
     NgIf,
     MatIcon,
     MatIconButton,
-    MatPaginator,
-    MatRow,
-    MatRowDef,
+    
     
     ]
 })
@@ -88,8 +87,21 @@ export class AddressComponent {
   
   
   editRow(row: Address) {
-    // Implementar lógica de edição da linha
-    console.log('Editar:', row);
+    const dialogRef = this.dialog.open(EditAddressDialogComponent, {
+      width: '400px',
+      data: { formData: { ...row } }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+      if (result) {
+        // Atualize o item na fonte de dados
+        const index = this.addresses.findIndex(item => item.id === row.id);
+        if (index !== -1) {
+          this.addresses[index] = result;
+        }
+      }
+    });
   }
 
   removeData(row: Address) {

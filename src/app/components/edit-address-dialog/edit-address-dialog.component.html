@@ -1,1 +1,33 @@
-<p>edit-address-dialog works!</p>
+<h2>Editar Endereço</h2>
+<form>
+  <mat-form-field>
+    <input matInput placeholder="CEP" [(ngModel)]="formData.cep">
+    
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Rua" [(ngModel)]="formData.logradouro">
+    
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Bairro" [(ngModel)]="formData.bairro">
+    
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Cidade" [(ngModel)]="formData.localidade">
+    
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Estado" [(ngModel)]="formData.uf">
+    
+  </mat-form-field>
+</form>
+<div class="button-conteiner"> 
+  <button type="button" class="btn btn-primary" (click)="save()">Salvar</button>
+  <button type="button" class="btn btn-secondary" (click)="close()">Cancelar</button>
+</div>
+
+
+
+    
+    
+    
