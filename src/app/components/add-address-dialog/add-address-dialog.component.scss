@@ -1,14 +1,15 @@
 @import "../../../styles/variables.scss";
 
-
-mat-dialog-content {
+mat-card{
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 10px;
     margin-bottom: 34px;
     align-items: center;
+    
     text-align: center;
+    
 
     .mat-form-field {
         display: flex;
@@ -16,11 +17,10 @@ mat-dialog-content {
         align-items: center;
         width: 100%;
     }
-    
     mat-card-content{
         font-size: 20px;
-        
-    }
 
+    }
+    
 
 }

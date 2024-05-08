@@ -1,6 +1,6 @@
 <h1 mat-dialog-title>{{ data.title }}</h1>
 <div mat-dialog-content>{{ data.message }}</div>
 <div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="true">{{ data.buttonText.ok }}</button>
-  <button mat-button [mat-dialog-close]="false">{{ data.buttonText.cancel }}</button>
+  <button class="btn btn-primary" mat-button [mat-dialog-close]="true">{{ data.buttonText.ok }}</button>
+  <button class="btn btn-secondary" mat-button [mat-dialog-close]="false">{{ data.buttonText.cancel }}</button>
 </div>

@@ -22,6 +22,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { NgIf } from '@angular/common';
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 import { EditAddressDialogComponent } from '../../components/edit-address-dialog/edit-address-dialog.component';
+import { AddAddressDialogComponent } from '../../components/add-address-dialog/add-address-dialog.component';
 
 export interface Address {
   id: number;
@@ -84,6 +85,17 @@ export class AddressComponent {
 
   @ViewChild(MatTable)
   table!: MatTable<Address>;
+
+  addData(){
+    const dialogRef = this.dialog.open(AddAddressDialogComponent, {
+      width: '400px',
+      data: { formData: {} }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+      
+    });
+  }
   
   
   editRow(row: Address) {
