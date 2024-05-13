@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { LoginService } from '../../services/login.service';
 import { HttpClient } from '@angular/common/http';
-import { ConsultaCepService } from '../../services/consulta-cep.service';
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
 import {MatIcon} from "@angular/material/icon";
 import {MatButton, MatIconButton} from "@angular/material/button";
@@ -23,24 +22,25 @@ import { NgIf } from '@angular/common';
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 import { EditAddressDialogComponent } from '../../components/edit-address-dialog/edit-address-dialog.component';
 import { AddAddressDialogComponent } from '../../components/add-address-dialog/add-address-dialog.component';
+import { CreateAddressService } from '../../services/create-address.service';
 
 export interface Address {
-  id: number;
+  id: string;
   cep: string;
   logradouro: string;
   bairro: string;
   localidade: string;
   uf: string;
 }
-const addresses: Address[] = [
-  //exemplo enquanto não conecto com o banco
-  { id: 1, cep: '12345-678', logradouro: 'Rua das Flores', bairro: 'Centro', localidade: 'São Paulo', uf:'SP' },
-  { id: 2, cep: '54321-987', logradouro: 'Avenida das Palmeiras', bairro: 'Jardim Botânico', localidade: 'Rio de Janeiro', uf:'RJ' },
-  { id: 3, cep: '98765-432', logradouro: 'Travessa das Orquídeas', bairro: 'Vila Aurora', localidade: 'Belo Horizonte', uf: 'MG' },
-  { id: 4, cep: '13579-246', logradouro: 'Alameda dos Girassóis', bairro: 'Parque Industrial', localidade: 'Campinas', uf: 'sp' },
-  { id: 5, cep: '01234-567', logradouro: 'Rua das Amendoeiras', bairro: 'Jardim Primavera', localidade: 'Porto Alegre', uf: 'RS' }
+// const addresses: Address[] = [
+//   //exemplo enquanto não conecto com o banco
+//   { id: 1, cep: '12345-678', logradouro: 'Rua das Flores', bairro: 'Centro', localidade: 'São Paulo', uf:'SP' },
+//   { id: 2, cep: '54321-987', logradouro: 'Avenida das Palmeiras', bairro: 'Jardim Botânico', localidade: 'Rio de Janeiro', uf:'RJ' },
+//   { id: 3, cep: '98765-432', logradouro: 'Travessa das Orquídeas', bairro: 'Vila Aurora', localidade: 'Belo Horizonte', uf: 'MG' },
+//   { id: 4, cep: '13579-246', logradouro: 'Alameda dos Girassóis', bairro: 'Parque Industrial', localidade: 'Campinas', uf: 'sp' },
+//   { id: 5, cep: '01234-567', logradouro: 'Rua das Amendoeiras', bairro: 'Jardim Primavera', localidade: 'Porto Alegre', uf: 'RS' }
 
-];
+// ];
 
 @Component({
     selector: 'app-address',
@@ -64,20 +64,34 @@ const addresses: Address[] = [
     MatIconButton,
     
     
-    ]
+    ],
+    providers: [CreateAddressService]
 })
 
 
 export class AddressComponent {
   
   constructor(private router: Router,
-    private loginService: LoginService,
+    private CreateAddressService: CreateAddressService,
     private toastService: ToastrService,
     private dialog: MatDialog
   ) {
   }
+
+  ngOnInit(){
+    this.listAddresses()
+  }
   displayedColumns: string[] = ['cep', 'logradouro', 'bairro', 'localidade', 'uf', 'actions'];
-  addresses = addresses
+  addresses:Address[] = [];
+
+  listAddresses(){
+    this.CreateAddressService.listAddress()
+    .subscribe(addresses => 
+      {this.addresses = addresses}
+    )
+  }
+
+  
 
   navigate(){
     this.router.navigate(["create-address"])

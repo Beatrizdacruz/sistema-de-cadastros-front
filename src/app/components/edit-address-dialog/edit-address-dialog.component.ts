@@ -12,6 +12,8 @@ import {MatButton} from "@angular/material/button";
 import {MatCard, MatCardContent} from "@angular/material/card";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
+import { CreateAddressService } from '../../services/create-address.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-edit-address-dialog',
@@ -30,7 +32,8 @@ import {MatInput} from "@angular/material/input";
     ReactiveFormsModule
   ],
   templateUrl: './edit-address-dialog.component.html',
-  styleUrl: './edit-address-dialog.component.scss'
+  styleUrl: './edit-address-dialog.component.scss',
+  providers: [CreateAddressService]
 })
 export class EditAddressDialogComponent {
   formData: any = {};
@@ -39,13 +42,34 @@ export class EditAddressDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<EditAddressDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private http: HttpClient
+    private http: HttpClient,
+    private CreateAddressService: CreateAddressService,
+    private toastService: ToastrService,
   ) {
     this.formData = { ...data.formData };
   }
 
   save() {
-    this.dialogRef.close(this.formData);
+    const { cep, logradouro, bairro, localidade, uf } = this.formData;
+    this.CreateAddressService.editAddress(cep, logradouro, bairro, localidade, uf)
+      .subscribe({
+        
+        next: (value: any) => {
+          sessionStorage.setItem("cep", value.cep);
+          sessionStorage.setItem("logradouro", value.logradouro);
+          sessionStorage.setItem("bairro", value.bairro);
+          sessionStorage.setItem("localidade", value.localidade);
+          sessionStorage.setItem("uf", value.uf);
+          console.log(sessionStorage)
+          this.toastService.success("Endereço cadastrado com sucesso");
+          this.dialogRef.close();
+        },
+        error: () => {
+          this.toastService.error("Erro ao cadastrar endereço");
+          console.log(cep)
+        }
+        
+      });
   }
 
   close() {
