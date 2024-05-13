@@ -106,6 +106,7 @@ export class AddressComponent {
       data: { formData: {} }
     });
     dialogRef.afterClosed().subscribe(result => {
+      this.listAddresses()
       console.log('The dialog was closed', result);
       
     });
@@ -145,8 +146,15 @@ export class AddressComponent {
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {
         // Remover o item da fonte de dados
-        this.addresses = this.addresses.filter(item => item.id !== row.id);
-        console.log('Excluir:', row);
+        this.CreateAddressService.deleteAddress(row.id).subscribe(
+          () => {
+            this.listAddresses();
+            console.log('Excluir:', row);
+          },
+          (error) => {
+            console.error('Erro ao excluir:', error);
+          }
+        );
       }
     });
   }

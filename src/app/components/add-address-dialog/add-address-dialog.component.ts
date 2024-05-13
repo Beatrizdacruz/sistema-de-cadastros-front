@@ -48,7 +48,7 @@ export class AddAddressDialogComponent {
     // this.addAddress(); // Se você quer adicionar o endereço automaticamente ao iniciar o componente
   }
 
-  addAddress() {
+  adicionarAddress() {
     const { cep, logradouro, bairro, localidade, uf } = this.formData;
     this.CreateAddressService.addAddress(cep, logradouro, bairro, localidade, uf)
       .subscribe({
