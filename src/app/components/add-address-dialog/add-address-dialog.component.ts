@@ -44,29 +44,33 @@ export class AddAddressDialogComponent {
     this.formData = data.formData? { ...data.formData }: {};
   }
 
-  ngOnInit() {
-    // this.addAddress(); // Se você quer adicionar o endereço automaticamente ao iniciar o componente
-  }
+  // ngOnInit() {
+  //   // this.addAddress(); // Se você quer adicionar o endereço automaticamente ao iniciar o componente
+  // }
 
   adicionarAddress() {
     const { cep, logradouro, bairro, localidade, uf } = this.formData;
     this.CreateAddressService.addAddress(cep, logradouro, bairro, localidade, uf)
-      .subscribe({
-        next: (value: any) => {
-          sessionStorage.setItem("id", value.id);
-          sessionStorage.setItem("cep", value.cep);
-          sessionStorage.setItem("logradouro", value.logradouro);
-          sessionStorage.setItem("bairro", value.bairro);
-          sessionStorage.setItem("localidade", value.localidade);
-          sessionStorage.setItem("uf", value.uf);
-          sessionStorage.setItem("user_id", value.user_id);
-          this.toastService.success("Endereço cadastrado com sucesso");
-          this.dialogRef.close();
-        },
-        error: () => {
-          this.toastService.error("Erro ao cadastrar endereço");
-        }
-      });
+    .subscribe({
+        
+      next: (value: any) => {
+        console.log("o format data")
+        console.log(this.formData)
+        sessionStorage.setItem("cep", cep);
+        sessionStorage.setItem("logradouro", logradouro);
+        sessionStorage.setItem("bairro", bairro);
+        sessionStorage.setItem("localidade", localidade);
+        sessionStorage.setItem("uf", uf);
+        console.log(sessionStorage)
+        this.toastService.success("Endereço cadastrado com sucesso");
+        this.dialogRef.close();
+      },
+      error: (error:any) => {
+        console.log(error)
+        this.toastService.error("Erro ao cadastrar endereço");
+      }
+      
+    });
   }
 
 

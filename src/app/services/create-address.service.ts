@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Address } from '../types/Address';
 import { Observable, tap } from 'rxjs';
+import { LoginService } from './login.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,34 +10,41 @@ import { Observable, tap } from 'rxjs';
 export class CreateAddressService {
   apiUrl: string = "http://localhost:8081/enderecos/"
 
-  user_id: string = '2ab40fa3-3afe-40f6-9dc8-e2f755a12a48'
-  constructor(private httpCliente: HttpClient) { }
+  constructor(private httpCliente: HttpClient,
+    private loginService: LoginService
+  ) { }
+
+  private getHeaders(): HttpHeaders {
+    const token = this.loginService.getToken();
+    console.log(token)
+    return new HttpHeaders().set("Authorization", "Bearer " + token);
+  }
+
 
   listAddress():Observable<Address[]>{
-    return this.httpCliente.get<Address[]>(this.apiUrl + "list-endereco/2ab40fa3-3afe-40f6-9dc8-e2f755a12a48")
+    return this.httpCliente.get<Address[]>(this.apiUrl + "list-endereco/",  {headers: this.getHeaders()})
   }
 
-  addAddress(cep: string, logradouro: string, bairro: string, localidade: string, uf: string){
-    const user_id = '2ab40fa3-3afe-40f6-9dc8-e2f755a12a48';
-    return this.httpCliente.post<Address>(this.apiUrl + "add-endereco/" , { cep, logradouro, bairro, localidade, uf, user_id}).pipe(
-      tap((value) => {
-        sessionStorage.setItem("id", value.id)
-        sessionStorage.setItem("cep", value.cep)
-        sessionStorage.setItem("logradouro", value.logradouro)
-        sessionStorage.setItem("bairro", value.bairro)
-        sessionStorage.setItem("localidade", value.localidade)
-        sessionStorage.setItem("uf", value.uf)
-        sessionStorage.setItem("user_id", value.user_id)
-      })
-    )
-  }
+  addAddress(cep: string, logradouro: string, bairro: string, localidade: string, uf: string): Observable<Address>{
+    return this.httpCliente.post<Address>(this.apiUrl + "add-endereco/" , { cep, logradouro, bairro, localidade, uf}, {headers: this.getHeaders()})
+  }//.pipe(
+      // tap((value) => {
+      //   sessionStorage.setItem("id", value.id)
+      //   sessionStorage.setItem("cep", value.cep)
+      //   sessionStorage.setItem("logradouro", value.logradouro)
+      //   sessionStorage.setItem("bairro", value.bairro)
+      //   sessionStorage.setItem("localidade", value.localidade)
+      //   sessionStorage.setItem("uf", value.uf)
+      // })
+    //)
+  //}
 
-  editAddress(cep: string, logradouro: string, bairro: string, localidade: string, uf: string){
-    return this.httpCliente.put<Address>(this.apiUrl + 'edit-endereco/7abcc869-1f72-416f-96d5-2150041bd384' , {cep, logradouro, bairro, localidade, uf});
+  editAddress(id: string, cep: string, logradouro: string, bairro: string, localidade: string, uf: string){
+    return this.httpCliente.put<Address>(this.apiUrl + 'edit-endereco/' + id , {cep, logradouro, bairro, localidade, uf}, {headers: this.getHeaders()});
   }
 
   deleteAddress(id: string){
-    return this.httpCliente.delete<Address>(this.apiUrl + 'delete-endereco/' + id);
+    return this.httpCliente.delete<Address>(this.apiUrl + 'delete-endereco/' + id, {headers: this.getHeaders()});
     
   }
 }

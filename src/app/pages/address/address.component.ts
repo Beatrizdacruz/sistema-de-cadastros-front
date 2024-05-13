@@ -128,6 +128,7 @@ export class AddressComponent {
           this.addresses[index] = result;
         }
       }
+      this.listAddresses();
     });
   }
 

@@ -42,7 +42,9 @@ export class LoginComponent {
 
   submit(){
     this.loginService.login(this.loginForm.value.email, this.loginForm.value.password).subscribe({
-      next: () => {
+      next: (res:any) => {
+        console.log(res.token)
+        this.loginService.setToken(res.token)
         this.toastService.success("sucesso"),
         this.router.navigate(["address"])
       },

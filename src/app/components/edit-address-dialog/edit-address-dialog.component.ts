@@ -50,16 +50,17 @@ export class EditAddressDialogComponent {
   }
 
   save() {
-    const { cep, logradouro, bairro, localidade, uf } = this.formData;
-    this.CreateAddressService.editAddress(cep, logradouro, bairro, localidade, uf)
+    const { id, cep, logradouro, bairro, localidade, uf } = this.formData;
+    this.CreateAddressService.editAddress(id, cep, logradouro, bairro, localidade, uf)
       .subscribe({
         
         next: (value: any) => {
-          sessionStorage.setItem("cep", value.cep);
-          sessionStorage.setItem("logradouro", value.logradouro);
-          sessionStorage.setItem("bairro", value.bairro);
-          sessionStorage.setItem("localidade", value.localidade);
-          sessionStorage.setItem("uf", value.uf);
+          console.log(this.formData)
+          sessionStorage.setItem("cep", cep);
+          sessionStorage.setItem("logradouro", logradouro);
+          sessionStorage.setItem("bairro", bairro);
+          sessionStorage.setItem("localidade", localidade);
+          sessionStorage.setItem("uf", uf);
           console.log(sessionStorage)
           this.toastService.success("Endereço cadastrado com sucesso");
           this.dialogRef.close();
@@ -89,7 +90,7 @@ export class EditAddressDialogComponent {
           this.formData.localidade = data.localidade;
           this.formData.uf = data.uf;
           this.formData.bairro = data.bairro;
-          console.log(data);
+          //console.log(data);
           
         },
         error => {

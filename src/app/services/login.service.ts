@@ -8,8 +8,20 @@ import { tap } from 'rxjs';
 })
 export class LoginService {
   apiUrl: string = "http://localhost:8081/auth/"
+  private token: string | null= null;
 
   constructor(private httpCliente: HttpClient) { }
+
+  getToken() : string | null{
+    // console.log(sessionStorage.getItem("auth-token"))
+    return sessionStorage.getItem("auth-token")
+  }
+
+  setToken(token: string){
+    this.token = token
+    // console.log(this.token)
+  }
+
 
   login(email:string, password: string){
     return this.httpCliente.post<LoginResponse>(this.apiUrl + "login", {email, password}).pipe(
