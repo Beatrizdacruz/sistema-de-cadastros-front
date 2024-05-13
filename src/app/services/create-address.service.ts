@@ -26,7 +26,7 @@ export class CreateAddressService {
   }
 
   addAddress(cep: string, logradouro: string, bairro: string, localidade: string, uf: string): Observable<Address>{
-    return this.httpCliente.post<Address>(this.apiUrl + "add-endereco/" , { cep, logradouro, bairro, localidade, uf}, {headers: this.getHeaders()})
+    return this.httpCliente.post<Address>(this.apiUrl + "add-endereco" , { cep, logradouro, bairro, localidade, uf}, {headers: this.getHeaders()})
   }//.pipe(
       // tap((value) => {
       //   sessionStorage.setItem("id", value.id)
