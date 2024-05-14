@@ -9,8 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 interface SignupForm {
   name: FormControl
   email: FormControl,
-  password: FormControl,
-  passwordConfirm: FormControl
+  password: FormControl
 }
 
 @Component({
@@ -39,8 +38,7 @@ export class SignUpComponent {
     this.signupForm = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.minLength(3)]),
       email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-      passwordConfirm: new FormControl('', [Validators.required, Validators.minLength(6)])
+      password: new FormControl('', [Validators.required, Validators.minLength(6)])
     })
   }
 

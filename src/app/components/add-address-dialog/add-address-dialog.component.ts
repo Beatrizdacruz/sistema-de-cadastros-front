@@ -1,5 +1,5 @@
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { MatDialogActions, MatDialogClose, MatDialogContent } from "@angular/material/dialog";
 import { HttpClient } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -43,10 +43,6 @@ export class AddAddressDialogComponent {
   ) {
     this.formData = data.formData? { ...data.formData }: {};
   }
-
-  // ngOnInit() {
-  //   // this.addAddress(); // Se você quer adicionar o endereço automaticamente ao iniciar o componente
-  // }
 
   adicionarAddress() {
     const { cep, logradouro, bairro, localidade, uf } = this.formData;
