@@ -19,6 +19,7 @@ import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-
 import { EditAddressDialogComponent } from '../../components/edit-address-dialog/edit-address-dialog.component';
 import { AddAddressDialogComponent } from '../../components/add-address-dialog/add-address-dialog.component';
 import { CreateAddressService } from '../../services/create-address.service';
+import { AuthService } from '../../services/auth.service';
 
 export interface Address {
   id: string;
@@ -57,16 +58,19 @@ export interface Address {
 
 
 export class AddressComponent {
+  username: string | null = null;
   
   constructor(private router: Router,
     private CreateAddressService: CreateAddressService,
     private toastService: ToastrService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private authService: AuthService
   ) {
   }
 
   ngOnInit(){
     this.listAddresses()
+    this.username = this.authService.getUsername();
   }
   displayedColumns: string[] = ['cep', 'logradouro', 'bairro', 'localidade', 'uf', 'actions'];
   addresses:Address[] = [];
@@ -78,7 +82,9 @@ export class AddressComponent {
     )
   }
 
-  
+  logout() {
+    this.authService.logout();
+  }
 
   navigate(){
     this.router.navigate(["create-address"])
