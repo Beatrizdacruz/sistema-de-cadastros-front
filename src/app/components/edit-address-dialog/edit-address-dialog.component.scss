@@ -9,6 +9,10 @@ mat-dialog-content {
     margin-bottom: 34px;
     align-items: center;
     text-align: center;
+    .title-card{
+        margin-bottom: 20px;
+        font-size: 20px;
+    }
 
     .mat-form-field {
         display: flex;
@@ -16,11 +20,16 @@ mat-dialog-content {
         align-items: center;
         width: 100%;
     }
-    
-    mat-card-content{
-        font-size: 20px;
-        
+   
+    .buttons-class{
+        gap: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        margin-bottom: 10px;
     }
+    
 
 
 }

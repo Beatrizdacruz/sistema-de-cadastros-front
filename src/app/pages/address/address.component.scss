@@ -1,12 +1,39 @@
-.btn-success{
-  margin-top: 20px;
-  margin-bottom: 20px
-}
-nav{
-  display: flex;
-  align-items: center;
+@import "../../../styles/variables.scss";
+
+
+.main-class{
+  padding: 10px 50px;
   
-  btn-btn-outline-danger{
-    justify-content: flex-end;
+  .title-page{
+    margin-top: 30px;
+    text-align: center;
+    font-size: 32px;
   }
+  .btn-success{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: right;
+    
+  }
+}
+.navbar{
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 50px;
+  align-items: center;
+  background-color: $secondary-color;
+  color: white;
+  .navbar-commands{
+    display: flex;
+    gap: 10px;
+    color: white;
+  }
+  .navbar-brand{
+    color: white;
+    margin: auto 0px;
+  }
+  .navbar-text{
+    color: white;
+  }
+  
 }

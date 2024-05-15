@@ -1,6 +1,6 @@
 <mat-dialog-content class="mat-typography">
   <mat-card>
-    <mat-card-content>Editar Endereco</mat-card-content>
+    <mat-card-content class="title-card">Editar Endereco</mat-card-content>
     <form>
       
       <mat-form-field appearance="outline">
@@ -30,8 +30,11 @@
         
       </mat-form-field>
     </form>
-    <button type="submit" class="btn btn-primary" (click)="save()">Salvar</button>
-    <button type="button" class="btn btn-secondary" (click)="close()">Cancelar</button>
+    <div class="buttons-class">
+      <button type="submit" class="btn btn-primary" (click)="save()">Salvar</button>
+      <button type="button" class="btn btn-secondary" (click)="close()">Cancelar</button>
+    </div>
+    
   </mat-card>
   
 </mat-dialog-content>
