@@ -1,7 +1,11 @@
 
 <nav class="navbar ">
 
-  <h2 class="navbar-brand" id="titulo-sistema">Sistema de Cadastros</h2>
+  <div class="navbar-brand-container">
+    <h2 class="navbar-brand" id="titulo-sistema">Sistema de Cadastros</h2>
+    <img src="/assets/svg/svg_brasao-ufba.svg" class="logo-img"/>
+  </div>
+  
   <div class="navbar-commands">
     <span class="navbar-text" id="nome-usuario">Olá, {{ username ? username : 'Visitante' }}!</span>
     <button class="btn btn-outline-danger" id="botao-logout" (click)="logout()">Logout</button>

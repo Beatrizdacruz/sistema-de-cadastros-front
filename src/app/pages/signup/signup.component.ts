@@ -44,7 +44,11 @@ export class SignUpComponent {
 
   submit(){
     this.loginService.signup(this.signupForm.value.name, this.signupForm.value.email, this.signupForm.value.password).subscribe({
-      next: () => this.toastService.success("sucesso"),
+      next: () => {
+        this.toastService.success("sucesso"),
+        this.router.navigate(["login"])
+      },
+        
       error: () => this.toastService.error("erro")
     })
   }
