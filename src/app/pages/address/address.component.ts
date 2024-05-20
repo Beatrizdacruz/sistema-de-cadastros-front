@@ -1,18 +1,24 @@
 import { MatDialog } from '@angular/material/dialog';
-
-import { Component, ViewChild } from '@angular/core';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import {MatIcon} from "@angular/material/icon";
-import {MatIconButton} from "@angular/material/button";
+import { MatIcon } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import {
   MatCell,
   MatCellDef,
   MatColumnDef,
-  MatHeaderCell, MatHeaderCellDef,
-  MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatTable,
+  MatHeaderCell,
+  MatHeaderCellDef,
+  MatHeaderRow,
+  MatHeaderRowDef,
+  MatRow,
+  MatRowDef,
+  MatTable,
   MatTableDataSource
-} from "@angular/material/table";
+} from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { NgIf } from '@angular/common';
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
@@ -31,11 +37,11 @@ export interface Address {
 }
 
 @Component({
-    selector: 'app-address',
-    standalone: true,
-    templateUrl: './address.component.html',
-    styleUrl: './address.component.scss',
-    imports: [
+  selector: 'app-address',
+  standalone: true,
+  templateUrl: './address.component.html',
+  styleUrls: ['./address.component.scss'],
+  imports: [
     MatCell,
     MatCellDef,
     MatColumnDef,
@@ -49,63 +55,64 @@ export interface Address {
     MatHeaderCellDef,
     NgIf,
     MatIcon,
-    MatIconButton,
-    
-    
-    ],
-    providers: [CreateAddressService]
+    MatButtonModule,
+    MatTableModule,
+    MatPaginatorModule
+  ],
+  providers: [CreateAddressService]
 })
-
-
-export class AddressComponent {
+export class AddressComponent implements OnInit {
   username: string | null = null;
-  
-  constructor(private router: Router,
-    private CreateAddressService: CreateAddressService,
+
+  displayedColumns: string[] = ['cep', 'logradouro', 'bairro', 'localidade', 'uf', 'actions'];
+  addresses = new MatTableDataSource<Address>([]);
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  constructor(
+    private router: Router,
+    private createAddressService: CreateAddressService,
     private toastService: ToastrService,
     private dialog: MatDialog,
     private authService: AuthService
-  ) {
-  }
+  ) {}
 
-  ngOnInit(){
-    this.listAddresses()
+  ngOnInit() {
+    this.listAddresses();
     this.username = this.authService.getUsername();
   }
-  displayedColumns: string[] = ['cep', 'logradouro', 'bairro', 'localidade', 'uf', 'actions'];
-  addresses:Address[] = [];
+  ngAfterViewInit(): void {
+    
+    console.log(this.paginator)
+    this.addresses.paginator = this.paginator;
+  }
 
-  listAddresses(){
-    this.CreateAddressService.listAddress()
-    .subscribe(addresses => 
-      {this.addresses = addresses}
-    )
+  listAddresses() {
+    this.createAddressService.listAddress().subscribe(addresses => {
+      this.addresses.data = addresses;
+    });
   }
 
   logout() {
     this.authService.logout();
   }
 
-  navigate(){
-    this.router.navigate(["create-address"])
+  navigate() {
+    this.router.navigate(['create-address']);
   }
 
-  @ViewChild(MatTable)
-  table!: MatTable<Address>;
-
-  addData(){
+  addData() {
     const dialogRef = this.dialog.open(AddAddressDialogComponent, {
       width: '400px',
       data: { formData: {} }
     });
+
     dialogRef.afterClosed().subscribe(result => {
-      this.listAddresses()
+      this.listAddresses();
       console.log('The dialog was closed', result);
-      
     });
   }
-  
-  
+
   editRow(row: Address) {
     const dialogRef = this.dialog.open(EditAddressDialogComponent, {
       width: '400px',
@@ -115,9 +122,10 @@ export class AddressComponent {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result);
       if (result) {
-        const index = this.addresses.findIndex(item => item.id === row.id);
+        const index = this.addresses.data.findIndex(item => item.id === row.id);
         if (index !== -1) {
-          this.addresses[index] = result;
+          this.addresses.data[index] = result;
+          this.addresses.data = [...this.addresses.data]; // Refresh the data source
         }
       }
       this.listAddresses();
@@ -138,7 +146,7 @@ export class AddressComponent {
 
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {
-        this.CreateAddressService.deleteAddress(row.id).subscribe(
+        this.createAddressService.deleteAddress(row.id).subscribe(
           () => {
             this.listAddresses();
             console.log('Excluir:', row);
